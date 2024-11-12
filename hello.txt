@@ -1,0 +1,6 @@
+how can we identify valid users?
+the process of identifying a user validily is called 
+this is the process where a user create an acc on our platform
+authorization what a user can do
+for doing anything its imp to have a user.
+
