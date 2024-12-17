@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const bcrypt = require('bcrypt')
 
 // it is server level not mongodb 
 const userSchema = new mongoose.Schema({
@@ -27,13 +27,15 @@ const userSchema = new mongoose.Schema({
         minlength: [10, "Phone number should be of length 10"],
         unique: [true, "Phone number is already in use"],
         required: [true, "Phone number should be provide"]
-    }, 
+    },
+
+    
     email: {
         type: String,
         trim: true, 
         required: [true, "Email should be provided"],
         unique: [true, "Email is already in use"],
-        match: [/([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/g],
+        match: /^[A-Za-z][A-Za-z0-9]*@gmail\.com$/,
     },
     password : {
         type: String,
@@ -44,6 +46,15 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
+userSchema.pre('save', async function (){
+    // Here u can modify your user before it is saved in mongodb
+    //console.log("Excuting pre save hook");
+    //console.log(this);
+    const hashedPassword = await bcrypt.hash(this.password, 10);
+    this.password = hashedPassword;
+    //console.log(this)
+    console.log("Exiting pre save hook and creating a user")
+})
 const User = mongoose.model("User", userSchema);
 module.exports = User;
 // all details of userSchema present in User object
@@ -53,3 +64,4 @@ module.exports = User;
 // validation is type, required, 
 
 // model is called collection
+//express cookies
