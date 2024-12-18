@@ -15,3 +15,4 @@ module.exports = cloudinary;
 
 // api key config in cloudinary object
 // then cloudinary object is used to upload files
+// upload object and multer function call with parameter

@@ -10,6 +10,9 @@ const userRouter = require('./routes/userRoute');
 const cartRouter = require('./routes/cartRouter');
 const authRouter = require('./routes/authRoute');
 const { isLoggedIn } = require('./validation/authValidator');
+const uploader = require('./middleware/multerMiddleware');
+const cloudinary = require('./config/cloudinaryConfig');
+const fs = require('fs/promises');
 // const PORT = process.env.PORT;
 
 const app = express();  // Server object
@@ -35,6 +38,16 @@ app.get('/ping', isLoggedIn, (req, res) => {
 app.use('/users', userRouter); // connects the router to the server
 app.use('/carts', cartRouter);
 app.use('/auth', authRouter);
+
+app.post('/photo',uploader.single('incomingFile'), async (req, res)=>{
+    const result = await cloudinary.uploader.upload(req.file.path)
+    console.log("result from cloudinary", result)
+    await fs.unlink(req.file.path);
+    return res.json({message: 'ok'})
+})
+// uploader middleware is used because image is access in this middleware
+//single is used because single file is upload
+// for multiple file upload used array 
 
 app.listen(process.env.PORT, async ()=>{
     await connectDB();
@@ -68,4 +81,4 @@ app.listen(process.env.PORT, async ()=>{
 // token is not accessed by javascript because of cookies
 // AWS S3  service
 // cloudinary is a SDK software development kit
-// 
+// fs is used to delete file update file
