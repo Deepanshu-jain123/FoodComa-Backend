@@ -66,3 +66,6 @@ app.listen(process.env.PORT, async ()=>{
 
 // yX5LBjA5kwvi4R_
 // token is not accessed by javascript because of cookies
+// AWS S3  service
+// cloudinary is a SDK software development kit
+// 
