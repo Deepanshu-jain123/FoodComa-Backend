@@ -15,10 +15,6 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required : [true, "Product price is required"]
     },
-    productDetail : {
-        type : String,
-        required : [true, "Product details is required"]
-    },
     category: {
         type : String,
         enum : ['veg', 'non-veg', 'drinks', 'sides'],

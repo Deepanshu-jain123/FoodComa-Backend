@@ -6,7 +6,7 @@ async function isLoggedIn(req, res, next){
     const token = req.cookies["authToken"];
     if(!token){
         return res.status(401).json({
-            sucess: false,
+            success: false,
             data: {},
             error: "Not authenticated",
             message: "No Auth Token provided"
@@ -27,7 +27,7 @@ async function isLoggedIn(req, res, next){
     //if reached here, then user is authentecated allow them to access the api
     req.user = {
         email : decoded.email,
-        id: decoded.id
+        id : decoded.id
     }
     next();
 }
