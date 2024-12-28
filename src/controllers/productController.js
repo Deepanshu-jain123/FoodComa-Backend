@@ -2,17 +2,16 @@ const { createProduct } = require('../services/productService')
 async function addProduct(req, res){
 
     try{
-        if(req.file.path){
         const product = await createProduct({
             productName: req.body.productName,
             description: req.body.description,
-            imagePath : req.file.path,
+            imagePath : req.file?.path,
             price: req.body.price,
             category: req.body.category,// if category is undefinded , veg will be stored
             inStock : req.body.inStock // if inStock is undefined then true will be stored
 
         });
-    }
+        console.log("Back to controller", product)
         return res.status(201).json({
             success : true,
             message : 'Successfully created the product',
@@ -26,7 +25,6 @@ async function addProduct(req, res){
             message : error.reason,
             data : {},
             error : error
-
         })
     }
 }
