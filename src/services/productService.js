@@ -1,6 +1,7 @@
-const cloudinary = require('../config/cloudinaryConfig')
+const cloudinary = require('../config/cloudinaryConfig');
 const ProductRespository = require('../repositories/productRepository');
-const fs = require('fs/promises')
+const fs = require('fs/promises');
+const NotFoundError = require('../utils/notFoundError');
 async function createProduct(productDetails){
     //1. We should check if an image is coming to 
     // create the product , then we should first upload it an cloudinary
@@ -13,7 +14,7 @@ async function createProduct(productDetails){
             await fs.unlink(process.cwd() + "/" + imagePath)
         }catch(error){
             console.log(error);
-            throw{reason: 'Not able to create product', statusCode : 500}
+            throw new InternalServerError();
         }
     }
     // 2. Then the url from cloudinay and other product
@@ -23,14 +24,35 @@ async function createProduct(productDetails){
         ...productDetails,
         productImage : productImage
     });
-
-    if(!product){
-        throw{reason: 'Not able to create product', statusCode : 500}
-    }
-    
     return product
+
+
+    // if(!product){
+    //     throw{reason: 'Not able to create product', statusCode : 500}
+    // }
+    
+    // return product
+}
+
+
+async function getProductById(productId){
+    const response = await ProductRespository.getProductById(productId);
+    if(!response){
+        throw new NotFoundError('Product')
+    }
+    return response;
+}
+
+async function deleteProductById(productId){
+    const response = await ProductRespository.deleteProductById(productId);
+    if(!response){
+        throw new NotFoundError('Product')
+    }
+    return response
 }
 
 module.exports = {
-    createProduct
+    createProduct,
+    getProductById,
+    deleteProductById
 }
