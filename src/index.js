@@ -2,12 +2,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
-
+const cors = require('cors');
 const ServerConfig = require("./config/serverConfig");
 const connectDB = require('./config/dbConfig');
 const User = require('./schema/userSchema');
 const userRouter = require('./routes/userRoute');
-const cartRouter = require('./routes/cartRouter');
+const cartRouter = require('./routes/cartRoute');
 const authRouter = require('./routes/authRoute');
 const { isLoggedIn } = require('./validation/authValidator');
 const uploader = require('./middleware/multerMiddleware');
@@ -17,6 +17,11 @@ const prouductRouter = require('./routes/productRoute');
 // const PORT = process.env.PORT;
 
 const app = express();  // Server object
+
+app.use(cors({
+    origin: 'https://localhost:5173', // allow to server to accept request from different origin
+    credentials: true // allow session cookie from browser to pass through
+}));
 app.use(cookieParser());
 // http request collect then json format can be read (means parse) bodyParseer 
 // express not capable to read this format then use bodyParser

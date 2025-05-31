@@ -1,5 +1,6 @@
 const { model } = require('mongoose');
-const { registerUser } = require('../services/userService')
+const { registerUser } = require('../services/userService');
+const AppError = require('../utils/appError');
 // const UserService = require("../services/userService");
 // const UserRepository = require("../repositories/userRespository");
 
@@ -21,6 +22,14 @@ async function createUser(req,res){
             error: {}
         });
     }catch(error){
+        if(error instanceof AppError){
+            return res.status(error.statusCode).json({
+                success : false,
+                message : error.message,
+                data : {},
+                error : error
+            })
+        }
         return res.status(error.statusCode).json({
             success: false,
             message: error.reason,

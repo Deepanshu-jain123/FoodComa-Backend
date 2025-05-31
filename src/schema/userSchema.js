@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
     },
     lastName : {
         type:String,
-        required:[true, "First Name is required"],
         minlength: [5, "First name must be atleast 5 character long"],
         lowercase:true,
         trim: true,// if the user gives extra spaces then it will automatically remove it
@@ -37,11 +36,19 @@ const userSchema = new mongoose.Schema({
         unique: [true, "Email is already in use"],
         match: /^[A-Za-z][A-Za-z0-9]*@gmail\.com$/,
     },
+
     password : {
         type: String,
         required: [true, "Password should be provided"],
         minlength: [6, "Password should be minimum 6 character long"]
+    },
+    role: {
+        type : String,
+        enum : ["USER", "ADMIN"],
+        default : "USER"
     }
+
+
 },{
     timestamps: true
 });

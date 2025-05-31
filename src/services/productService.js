@@ -11,6 +11,7 @@ async function createProduct(productDetails){
         try{
             const cloudinaryResponse = await cloudinary.uploader(imagePath);
             var productImage = cloudinaryResponse.secure_url;
+            console.log(productImage)
             console.log(imagePath)
             console.log(process.cwd() + "/" + imagePath);
             await fs.unlink(process.cwd() + "/" + imagePath)
@@ -26,6 +27,7 @@ async function createProduct(productDetails){
         ...productDetails,
         productImage : productImage
     });
+    console.log(product)
     return product
 
 
