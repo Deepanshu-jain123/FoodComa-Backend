@@ -1,5 +1,5 @@
 
-const dotenv = require('dotenv') // object
+const dotenv = require('dotenv'); // object
 dotenv.config();
 
 // HERE we are exporting all the env variables that the project uses
@@ -10,7 +10,9 @@ module.exports = {
     JWT_EXPIRY : process.env.JWT_EXPIRY,
     CLOUDINARY_API_SECRET : process.env.CLOUDINARY_API_SECRET,
     CLOUDINARY_API_KEY : process.env.CLOUDINARY_API_KEY,
-    CLOUDINATY_CLOUD_NAME : process.env.CLOUDINARY_CLOUD_NAME
+    CLOUDINARY_CLOUD_NAME : process.env.CLOUDINARY_CLOUD_NAME,
+    COOKIE_SECURE : process.env.COOKIE_SECURE,
+    FRONTEND_URL : process.env.FRONTEND_URL
 }
 
 // resposibility to env manage environment variable

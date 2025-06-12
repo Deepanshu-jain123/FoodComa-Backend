@@ -1,4 +1,5 @@
-const { FRONTEND_URL } = require("../../../FoodComa-Backend-master/src/config/serverConfig")
+
+const { COOKIE_SECURE, FRONTEND_URL } = require("../config/serverConfig")
 const { loginUser } = require("../services/authService")
 
 
@@ -6,7 +7,8 @@ async function logout(req, res){
     console.log("cookie from frontend", req.cookies)
     res.cookie("authToken", "", {
         httpOnly: true,
-        secure: false,
+        secure: COOKIE_SECURE,
+        sameSite: "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
         domain: FRONTEND_URL
     })
@@ -28,7 +30,9 @@ async function login(req, res){
 
         res.cookie("authToken", response.token, {
             httpOnly: true,
-            secure: false,
+            secure: COOKIE_SECURE,
+            sameSite : "lax",
+            domain: FRONTEND_URL,
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         
@@ -42,7 +46,7 @@ async function login(req, res){
             error: {}
         })
     }catch(error){
-        return res.status(error.statusCode).json({
+        return res.status(error.statusCode || 500).json({
             success: false,
             data: {},
             message: error.message,
@@ -52,5 +56,5 @@ async function login(req, res){
 
 }
 module.exports = {
-    login
+    login,logout
 }

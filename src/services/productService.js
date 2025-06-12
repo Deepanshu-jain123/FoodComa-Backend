@@ -3,18 +3,18 @@ const ProductRespository = require('../repositories/productRepository');
 const fs = require('fs/promises');
 const NotFoundError = require('../utils/notFoundError');
 async function createProduct(productDetails){
-    //1. We should check if an image is coming to 
-    // create the product , then we should first upload it an cloudinary
+    //1. We should check if an image is coming to create the product , then we should first upload it an cloudinary
     const imagePath = productDetails.imagePath;
     console.log(imagePath)
     if(imagePath){
         try{
-            const cloudinaryResponse = await cloudinary.uploader(imagePath);
+            const cloudinaryResponse = await cloudinary.uploader.upload(imagePath);
             var productImage = cloudinaryResponse.secure_url;
             console.log(productImage)
             console.log(imagePath)
-            console.log(process.cwd() + "/" + imagePath);
-            await fs.unlink(process.cwd() + "/" + imagePath)
+            console.log(process.cwd() + "/" + imagePath); // uncomment
+            await fs.unlink(process.cwd() + "/" + imagePath) // uncomment
+            // await fs.unlink(req.file.path); // comment
         }catch(error){
             console.log(error);
             throw new InternalServerError();
@@ -47,6 +47,15 @@ async function getProductById(productId){
     return response;
 }
 
+
+async function getAllProductsData(){
+    const response = await ProductRespository.getAllProducts();
+    if(!response){
+        throw new NotFoundError('Product')
+    }
+    return response;
+}
+
 async function deleteProductById(productId){
     const response = await ProductRespository.deleteProductById(productId);
     if(!response){
@@ -58,5 +67,6 @@ async function deleteProductById(productId){
 module.exports = {
     createProduct,
     getProductById,
+    getAllProductsData,
     deleteProductById
 }

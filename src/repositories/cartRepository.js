@@ -22,11 +22,13 @@ async function createcart(userId){
 }
 
 async function getCartByUserId(userId){
+
     try{
         const cart = await Cart.findOne({
+            
             user : userId
         }).populate('items.product');
-        return Cart;
+        return cart;
     }catch(error){
         console.log(error);
         throw new InternalServerError();
@@ -35,7 +37,7 @@ async function getCartByUserId(userId){
 
 async function clearCart(userId){
     try{
-        const cart = await cart.findOne({
+        const cart = await Cart.findOne({
             user : userId
         })
         if(!cart){

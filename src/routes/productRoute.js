@@ -1,19 +1,23 @@
 const express = require('express');
-const { addProduct, deleteProduct, getProduct } = require('../controllers/productController');
+const { addProduct, deleteProduct, getProduct, getProducts } = require('../controllers/productController');
 const uploader = require('../middleware/multerMiddleware');
 const { isLoggedIn, isAdmin } = require('../validation/authValidator');
+// const { uploader } = require('../config/cloudinaryConfig');
 
-const prouductRouter = express.Router();
+const productRouter = express.Router();
 
-prouductRouter.post(
+productRouter.post(
     '/',
     isLoggedIn,
     isAdmin,
     uploader.single('productImage'),
     addProduct
 );
-prouductRouter.get('/:id', getProduct)
-prouductRouter.delete('/:id',deleteProduct)
+productRouter.get('/:id', getProduct)
+
+productRouter.get('/', getProducts)
+
+productRouter.delete('/:id',deleteProduct)
 //GET /products/:id
 //delete /products/:id
-module.exports = prouductRouter;
+module.exports = productRouter;

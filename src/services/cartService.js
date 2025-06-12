@@ -1,4 +1,4 @@
-const { getCartByUserId } = require("../repositories/cartRepository");
+const { getCartByUserId, clearCart, createcart } = require("../repositories/cartRepository");
 const AppError = require("../utils/appError");
 const BadRequestError = require("../utils/badRequestError");
 const NotFoundError = require("../utils/notFoundError");
@@ -8,7 +8,10 @@ const { getProductById } = require("./productService");
 async function getCart(userId){
     const cart = await getCartByUserId(userId);
     if(!cart){
-        throw new NotFoundError("Cart")
+        // cart = await createcart(userId); // chatgpt
+        // if(!cart){
+            throw new NotFoundError("Cart")
+        // }
     }
     return cart;
 }
@@ -35,7 +38,7 @@ async function modifyCart(userId, productId, shouldAdd = true){
                 else 
                     throw new AppError("The quantity of the item requested is not available", 404)
             }else{
-                if(item.quantity >0)
+                if(item.quantity > 0)
                     item.quantity += quantityValue;
                     if(item.quantity == 0){
                         cart.items = cart.items.filter(item => item.product._id != productId);
@@ -66,8 +69,8 @@ async function modifyCart(userId, productId, shouldAdd = true){
     return cart;
 }
 
-async function clearProductsFromCart(cartId){
-    const response = await clearProductsFromCart(cartId);
+async function clearProductsFromCart(userId){
+    const response = await clearCart(userId);
     return response
 }
 
